@@ -3,7 +3,7 @@
 ## 🚀 Tecnologías Utilizadas
 
 ### Frontend
-* **React 18** con **Vite**
+* **React 18**
 * **TypeScript**
 * **Tailwind CSS**
 
