@@ -1,7 +1,7 @@
 import { Task } from "@/types/task";
-import { TaskDto } from "../dtos/task.dto";
+import { TaskDto } from "../dtos/taskDto";
 
-export const mapTaskDtoToTask = (dto: TaskDto): Task => {
+export const taskDtoToTask = (dto: TaskDto): Task => {
     return {
         id: dto.id,
         date: new Date(dto.date),

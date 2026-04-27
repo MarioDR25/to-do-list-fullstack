@@ -1,7 +1,8 @@
 export interface Task {
-    id: number,
-    date: Date,
+    id: number;
+    date: Date;
     title: string,
     description?: string,
-    completed: boolean
+    completed: boolean 
 }
+ export type TaskRequest = Omit<Task, 'id' | 'date'>
