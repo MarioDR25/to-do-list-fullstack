@@ -1,5 +1,5 @@
 'use client'
-import { actionDeleteTask } from "@/data/actions/task.actions";
+import { actionDeleteTask } from "@/data/actions/taskActions";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

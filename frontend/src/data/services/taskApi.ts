@@ -21,8 +21,9 @@ export const getAllTasks = async (): Promise<Task[]> => {
 
 
 
+
 export const deleteTask = async (id: number): Promise<void> => {
-    const response = await fetch(`${BASE_URL}/tasks/delete/${id}`, {method: 'DELETE'})
+    const response = await fetch(`${BASE_URL}/tasks/${id}`, {method: 'DELETE'})
     if (!response.ok) {
         throw new Error(`No se pudo ELiminar: ${response.status} ${response.statusText}`)
     }
@@ -32,7 +33,7 @@ export const deleteTask = async (id: number): Promise<void> => {
 export const addTask = async (task: TaskRequest): Promise<void> => {
     const data: TaskRequestDto = taskDataToTaskDataDto(task)
 
-    const response = await fetch(`${BASE_URL}/tasks/add`, 
+    const response = await fetch(`${BASE_URL}/tasks`, 
         {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -48,7 +49,7 @@ export const addTask = async (task: TaskRequest): Promise<void> => {
 export const updateTask = async (id: number, task: TaskRequest): Promise<void> => {
     const data: TaskRequestDto = taskDataToTaskDataDto(task)
 
-    const response = await fetch(`${BASE_URL}/tasks/modify/${id}`, 
+    const response = await fetch(`${BASE_URL}/tasks/${id}`, 
         {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},

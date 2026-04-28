@@ -1,5 +1,5 @@
 import TaskCard from "@/components/TaskCard";
-import { getAllTasks } from "@/data/services/api";
+import { getAllTasks } from "@/data/services/taskApi";
 import { Task } from "@/types/task";
 import FormModal from "@/components/FormModal";
 import CreateButton from "@/components/CreateButton";

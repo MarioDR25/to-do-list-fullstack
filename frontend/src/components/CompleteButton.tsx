@@ -1,5 +1,5 @@
 'use client'
-import { actionUpdateTask } from "@/data/actions/task.actions"
+import { actionUpdateTask } from "@/data/actions/taskActions"
 import { Task } from "@/types/task"
 import { faSquareCheck } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"

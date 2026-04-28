@@ -2,17 +2,18 @@
 import { useEffect, useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useTaskContext } from "@/context/TaskContext";
-import { actionAddTask, actionUpdateTask } from "@/data/actions/task.actions";
+import { actionAddTask, actionUpdateTask } from "@/data/actions/taskActions";
 import { TaskRequest } from "@/types/task";
 
 
 type MyChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
-
+type MySubmitEvent = React.SubmitEvent<HTMLFormElement>
 
 const FormModal = () => {
   const { isOpen, selectedTask, closeModal } = useTaskContext();
   const [formData, setFormData] = useState<TaskRequest>({ title: "", description: "", completed: false });
 
+  
   useEffect(() => {
     if (selectedTask) {
       setFormData({ title: selectedTask.title, description: selectedTask.description, completed: selectedTask.completed });
@@ -21,7 +22,8 @@ const FormModal = () => {
     }
   }, [selectedTask]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+
+  const handleSubmit = async (e : MySubmitEvent) => {
     e.preventDefault();
     (selectedTask) ? await actionUpdateTask(selectedTask.id, formData) : await actionAddTask(formData);
     setFormData({ title: "", description: "", completed: false });
@@ -29,8 +31,7 @@ const FormModal = () => {
   };
 
   const handleChange = (e: MyChangeEvent) => {
-    const target = e.target
-    setFormData({ ...formData, [target.name]: target.value })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
 
@@ -56,6 +57,8 @@ const FormModal = () => {
                 </label>
                 <input
                   required
+                  maxLength={15}
+                  minLength={3}
                   type="text"
                   name="title"
                   value={formData.title}
@@ -74,6 +77,7 @@ const FormModal = () => {
                   value={formData.description}
                   onChange={handleChange}
                   rows={3}
+                  maxLength={300}
                   placeholder="Detalles de la tarea..."
                   className="w-full bg-gray-700 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-red-500 transition-all resize-none"
                 />
