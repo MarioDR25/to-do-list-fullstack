@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { Application } from 'express';
 import taskRoutes from './routes/task.routes.js';
 import userRoutes from './routes/user.routes.js';

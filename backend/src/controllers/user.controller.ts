@@ -1,16 +1,13 @@
-import { Request, Response } from "express";
-import User, { createNewUser } from "../models/user.model.js";
-import { readData, writeData } from "../helpers/fileManager.js";
-import path from "path";
-import bcrypt from "bcrypt";
-
-const usersPath = path.resolve('data', 'users.json')
+import { Request, Response } from 'express';
+import { createNewUser } from '../models/user.model.js';
+import { supabase } from '../supabase.js';
+import bcrypt from 'bcrypt';
 
 export const getAllUsers = async (req: Request, res: Response) => {
     try {
-        const users = await readData<User>(usersPath);
-        const safeUsers = users.map(({ password, ...rest }) => rest);
-        res.status(200).json(safeUsers);
+        const { data, error } = await supabase.from('users').select('id, username, createdAt');
+        if (error) throw error;
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
@@ -18,12 +15,10 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const getUserByID = async (req: Request, res: Response) => {
     try {
-        const idP = req.params.id;
-        const users: User[] = await readData<User>(usersPath);
-        const user = users.find(u => u.id === idP);
-        if (!user) return res.status(404).json({ message: "User not found" });
-        const { password, ...safeUser } = user;
-        res.status(200).json(safeUser);
+        const { data, error } = await supabase.from('users').select('id, username, createdAt').eq('id', req.params.id).single();
+        if (error) throw error;
+        if (!data) return res.status(404).json({ message: "User not found" });
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
@@ -32,43 +27,36 @@ export const getUserByID = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
     try {
         const { username, password } = req.body;
-        const users: User[] = await readData<User>(usersPath);
-        const exists = users.find(u => u.username === username);
+        const { data: exists } = await supabase.from('users').select('id').eq('username', username).single();
         if (exists) return res.status(400).json({ message: "Username already taken" });
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser: User = createNewUser(username, hashedPassword);
-        users.push(newUser);
-        await writeData<User>(usersPath, users);
-        res.status(201).json({ id: newUser.id, username: newUser.username });
+        const newUser = createNewUser(username, hashedPassword);
+        const { data, error } = await supabase.from('users').insert(newUser).select('id, username').single();
+        if (error) throw error;
+        res.status(201).json(data);
     } catch (error) {
+        console.log(error);
+        
         res.status(500).json({ message: "Internal server error" });
     }
 };
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        const users: User[] = await readData<User>(usersPath);
-        const userIndex = users.findIndex(u => u.id === req.params.id);
-        if (userIndex === -1) return res.status(404).json({ message: "User not found" });
-        const body = req.body.password ? { ...req.body, password: await bcrypt.hash(req.body.password, 10) } : req.body;
-        users[userIndex] = { ...users[userIndex], ...body };
-        await writeData<User>(usersPath, users);
-        res.status(200).json({ id: users[userIndex]?.id, username: users[userIndex]?.username });
+        const body = req.body.password ? { ...req.body, password: await bcrypt.hash(req.body.password, 10) }: req.body;
+        const { data, error } = await supabase.from('users').update(body).eq('id', req.params.id).select('id, username').single();
+        if (error) throw error;
+        if (!data) return res.status(404).json({ message: "User not found" });
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
 };
 
-
-
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const idP = req.params.id;
-        const usersData = await readData<User>(usersPath);
-        const exist: boolean = usersData.some(t => t.id === idP);
-        if (!exist) return res.status(404).json({ message: "User does not exist" });
-        const users: User[] = usersData.filter(t => t.id !== idP);
-        await writeData<User>(usersPath, users);
+        const { error } = await supabase.from('users').delete().eq('id', req.params.id);
+        if (error) throw error;
         res.status(204).send();
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });

@@ -4,7 +4,7 @@ export default interface User {
     id: string;
     username: string;
     password: string;
-    createdAt: string;
+    created_at: string;
 }
 
 export type CreateUserDTO = {
@@ -17,6 +17,6 @@ export const createNewUser = (username: string, password: string): User => {
         id: uuidv4(),
         username,
         password,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     };
 }

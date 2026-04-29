@@ -4,5 +4,23 @@
     "username": "mariod0525",
     "password": "$2b$10$5xo9Z0YBSnw0kWaIMj9xWulcEfR6vCAaKAXoGE2yasAIOjHOkuC5.",
     "createdAt": "2026-04-28T23:02:52.023Z"
+  },
+  {
+    "id": "b7f16ea8-d956-459a-94c7-21707ffed842",
+    "username": "mariod",
+    "password": "$2b$10$VmMXyNRrX2ysUvPGViyM/uOhIKKRCC6IfqcTLI4LWaa9ZrDls.KYe",
+    "createdAt": "2026-04-29T14:27:45.605Z"
+  },
+  {
+    "id": "eef02717-7417-4187-b2fc-0d027096be07",
+    "username": "horacio",
+    "password": "$2b$10$quHvxJhb3/LUoCgwC5YNMea..8w5ut.cz.6WB9sgMqyk6DuzcxE.a",
+    "createdAt": "2026-04-29T14:28:36.530Z"
+  },
+  {
+    "id": "e4454189-853a-45e6-9c02-912e638c7d9b",
+    "username": "marioi",
+    "password": "$2b$10$YnNXkBpaNB68vv/ugT3k/.s2bLmSwWPaMKVuOUrJMitZtwiIpQqOe",
+    "createdAt": "2026-04-29T14:31:06.811Z"
   }
 ]
