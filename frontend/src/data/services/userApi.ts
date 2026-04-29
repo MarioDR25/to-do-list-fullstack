@@ -19,7 +19,7 @@ export const getUserById = async (id: string): Promise<User> => {
     return userDtoToUser(data);
 }
 
-export const createUser = async (user: UserRequest): Promise<void> => {
+export const createUser = async (user: UserRequest): Promise<{ id: string; username: string }> => {
     const data = userRequestToDto(user);
     const response = await fetch(`${BASE_URL}/users`, {
         method: 'POST',
@@ -27,6 +27,7 @@ export const createUser = async (user: UserRequest): Promise<void> => {
         body: JSON.stringify(data),
     });
     if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
+    return response.json();
 }
 
 export const updateUser = async (id: string, user: UserUpdateRequest): Promise<void> => {

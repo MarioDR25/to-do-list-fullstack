@@ -3,45 +3,32 @@ import { revalidatePath } from "next/cache";
 import { addTask, deleteTask, updateTask } from "../services/taskApi";
 import { TaskRequest } from "@/types/task";
 
-export const actionDeleteTask = async (id: number) => {
+export const actionDeleteTask = async (id: string, userId: string) => {
     try {
-        await deleteTask(id);
+        await deleteTask(id, userId);
         revalidatePath('/');
         return { success: true };
     } catch (error) {
-        console.error("Error en action:", error);
-        return {
-            success: false,
-            error: "No se pudo conectar con el servidor."
-        };
+        return { success: false, error: "No se pudo eliminar la tarea." };
     }
 }
 
-export const actionAddTask = async (task: TaskRequest) => {
+export const actionAddTask = async (task: TaskRequest, userId: string) => {
     try {
-        await addTask(task)
+        await addTask(task, userId);
         revalidatePath('/');
         return { success: true };
     } catch (error) {
-        console.error("Error en action:", error);
-        return {
-            success: false,
-            error: "No se pudo conectar con el servidor."
-        };
+        return { success: false, error: "No se pudo agregar la tarea." };
     }
 }
 
-export const actionUpdateTask = async (id: number, task: TaskRequest) => {
+export const actionUpdateTask = async (id: string, task: TaskRequest, userId: string) => {
     try {
-        await updateTask(id, task)
-        revalidatePath('/')
+        await updateTask(id, task, userId);
+        revalidatePath('/');
         return { success: true };
     } catch (error) {
-        console.error("Error en action:", error);
-        return {
-            success: false,
-            error: "No se pudo conectar con el servidor."
-        };
+        return { success: false, error: "No se pudo actualizar la tarea." };
     }
 }
-

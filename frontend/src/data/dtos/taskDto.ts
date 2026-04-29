@@ -6,4 +6,5 @@ export interface TaskDto {
     completed: boolean;
 }
 
-export type TaskRequestDto = Pick<TaskDto, 'title' | 'description' | 'completed'>;
+export type TaskRequestDto = Pick<TaskDto, 'title' | 'description'>;
+export type TaskUpdateDto = Pick<TaskDto, 'title' | 'description' | 'completed'>
